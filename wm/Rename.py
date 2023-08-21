@@ -22,7 +22,26 @@ def ys_hashRename(newName):
     objs = pm.selected()
     if len(objs) > 0:
         node = pm.createNode('unknown')
-        pm.addAttr(node, ln='selObjects', dt='message', multi=True, im = False)
+        pm.select(node, r=True)
+        mel.eval('addAttr -ln "selObjects" -at message -multi -im 0;')   
+        ##pm.addAttr(node, ln='selObjects', dt='message', multi=True, im = False)
         for obj in objs:
-            pm.connectAttr(obj + '.message', node + '.selObjects')
+            pm.connectAttr(obj + '.message', node + '.selObjects', na =True)
+        con = pm.listConnections(node + '.selObjects')
 
+        for x in range(len(con)):
+            tmp = pm.listConnections(node  + '.selObjects[{}]'.format(x))
+            obj = tmp[0]
+            name = ys_replaceHash(newName, str(int(x) + 1))
+            pm.rename(obj, name)
+            print('ReName: {} --> {} \n'.format(obj, name))
+        
+        result = pm.listConnections(node + '.selObjects')
+        pm.delete(node)
+    
+    if len(result) > 0:
+        pm.select(result)   
+    return result
+
+            
+ys_hashRename('asdf_###')
