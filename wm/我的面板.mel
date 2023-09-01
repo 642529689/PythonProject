@@ -1,0 +1,1265 @@
+global proc UIproc()
+{
+//==============UI==========
+ if (`window -exists kyrezhangUI`)
+    deleteUI kyrezhangUI;
+window -title "rigging"
+ -sizeable on -resizeToFitChildren on
+ -menuBar on
+ -wh 582 437
+ kyrezhangUI;
+ 	menu -label "常用命令" -tearOff on;
+         menuItem -label "自动加载无缝" ;
+         menuItem -divider on;
+         menuItem -label "测试";
+         //----------------tab
+string $form = `formLayout`;
+string $tabs = `tabLayout -innerMarginWidth 5 -innerMarginHeight 5`;
+//==============================================
+formLayout -edit
+    -attachForm $tabs "top"    0
+     -attachForm $tabs "left"   0
+     -attachForm $tabs "bottom" 0
+     -attachForm $tabs "right"  0
+     $form;
+//====骨骼工具
+    string $ch1=` columnLayout -adjustableColumn on TopCol`;
+		frameLayout -label "常用骨骼工具" -labelAlign "top" -collapsable on
+                -borderStyle "in" fac;
+                rowLayout -nc 7 MainRow1;
+   columnLayout -adjustableColumn off;
+     separator -style "in";
+      button -label "骨骼工具"  -backgroundColor 0.688 1.000 0.746 -command "JointToolOptions" ;
+      button -label "镜像骨骼"  -backgroundColor 0.688 1.000 0.746 -command "MirrorJointOptions" ;
+      button -label "切割骨骼"  -backgroundColor 0.688 1.000 0.746 -command "js_splitSelJointUI" ;
+      setParent MainRow1;
+    columnLayout -adjustableColumn off;
+      separator -style "in";
+      button -label "较     轴"  -backgroundColor 0.688 1.000 0.746 -command "jointBox" ;
+      button -label "重 命名"  -backgroundColor 0.688 1.000 0.746 -command "js_hashRenameUI" ;
+      setParent MainRow1;
+            setParent $tabs;
+       string $ch2 = ` columnLayout -adjustableColumn on secCol`;
+
+   //=======rig
+         frameLayout -label "#======常用======#" -labelAlign "top" -collapsable on
+                -borderStyle "in" sec;
+                rowLayout -nc 7 MainRow2;
+columnLayout -adjustableColumn off ;
+     separator -style "in";
+      button -label "添加属性"  -backgroundColor 0.688 1.000 0.746 -command "addAtrrUi" ;
+      button -label "锁定属性"  -backgroundColor 0.688 1.000 0.746 -command "km_animControlCleanUp" ;
+      setParent MainRow2;
+    columnLayout -adjustableColumn off;
+      separator -style "in";
+      button -label "弧长显示"  -backgroundColor 0.688 1.000 0.746 -command "getArcLen" ;
+      button -label "合并曲线"  -backgroundColor 0.688 1.000 0.746 -command "combCurve" ;
+      setParent MainRow2;
+      setParent secCol;
+ frameLayout -label "#======handsetup======#" -labelAlign "top" -collapsable on
+                -borderStyle "in" three;
+                rowLayout -nc 7 MainRow3;
+columnLayout -adjustableColumn off ;
+     separator -style "in";
+      button -label "自动加载ikfk驱动"  -backgroundColor 0.688 1.000 0.746 -command "setDriven" ;
+      button -label "自动加载ikfk控制器显示隐藏"  -backgroundColor 0.688 1.000 0.746 -command "getDriven" ;
+      setParent MainRow3;
+
+            setParent $tabs;
+            //==========
+            string $ch3 = ` columnLayout -adjustableColumn on thrCol`;
+
+            columnLayout -adjustableColumn on load1;
+frameLayout -label "ikfk转换控制器属性" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf1;
+
+textFieldButtonGrp -label "ikfk转换控制器属性" -text "" -buttonLabel "load sel" tb1 ;
+setParent load1;
+frameLayout -label "ikfk转换控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf2;
+textFieldButtonGrp -label "ikfk转换控制器" -text "" -buttonLabel "load sel" tb11 ;
+setParent load1;
+frameLayout -label "ik极向量位移对位器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf3;
+textFieldButtonGrp -label "ik极向量位移对位器" -text "" -buttonLabel "Load sel" tb2 ;
+setParent load1;
+frameLayout -label "手腕骨骼" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf4;
+textFieldButtonGrp -label "手腕骨骼" -text "" -buttonLabel "Load sel" tb3 ;
+setParent load1;
+frameLayout -label "ik手部控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf5;
+textFieldButtonGrp -label "ik手部控制器" -text "" -buttonLabel "Load sel" tb4 ;
+setParent load1;
+frameLayout -label "ik极向量控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf6;
+textFieldButtonGrp -label "ik极向量控制器" -text "" -buttonLabel "Load sel" tb5 ;
+setParent load1;
+frameLayout -label "手臂骨骼" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf7;
+textFieldButtonGrp -label "手臂骨骼" -text "" -buttonLabel "Load sel" tb6 ;
+setParent load1;
+frameLayout -label "肘部骨骼" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf8;
+textFieldButtonGrp -label "肘部骨骼" -text "" -buttonLabel "Load sel" tb7 ;
+setParent load1;
+frameLayout -label "fk手臂控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf9;
+textFieldButtonGrp -label "fk手臂控制器" -text "" -buttonLabel "Load sel" tb8 ;
+setParent load1;
+frameLayout -label "fk肘部控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf10;
+textFieldButtonGrp -label "fk肘部控制器" -text "" -buttonLabel "Load sel" tb9 ;
+setParent load1;
+frameLayout -label "fk手腕控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf11;
+textFieldButtonGrp -label "fk手腕控制器" -text "" -buttonLabel "Load sel" tb10 ;
+setParent load1;
+textFieldButtonGrp -e -bc "LoadSelectAttr tb1" tb1 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb2" tb2 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb3" tb3 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb4" tb4 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb5" tb5 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb6" tb6 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb7" tb7 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb8" tb8 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb9" tb9 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb10" tb10 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb11" tb11 ;
+scrollField -wordWrap false -height 80 showSCNode;
+
+
+
+
+
+button -label "加载" -command "getsNode";
+     tabLayout -edit
+         -tabLabel $ch1 "骨骼工具" -tabLabel $ch2 "rig常用" -tabLabel $ch3 "自动加载无缝"
+         $tabs;
+
+
+
+ showWindow  kyrezhangUI;
+}
+global proc int js_getOptionVar (int $default, string $optionVar)
+{
+    // check and see if the optionVar exists
+    int $return = $default;
+    if (!`optionVar -exists $optionVar`)
+    {
+        optionVar -iv $optionVar $default;
+    }
+    $return = `optionVar -q $optionVar`;
+
+    return $return;
+}
+global proc js_splitSelJoint (int $numSegments)
+{
+    // This proc will split the selected joint into the specified number of segments    //
+    //
+
+    if ($numSegments < 2)
+    {
+        error ("The number of segments has to be greater than 1.. ");
+    }
+    // VARIABLES
+    //
+    string $joints[0];
+    string $joint;
+
+    string $newChildJoints[0];
+    int $count = 0;
+    $joints = `ls -sl -type joint`;
+    for ($joint in $joints)
+    {
+
+        string $child;
+
+        $child = `js_getChildJoint $joint`;
+
+        if (size($child) == "")
+        {
+            error ("Joint: " + $joint + " has no children joints.\n");
+        }
+        else
+        {
+            string $axis;
+            string $rotationOrder;
+            string $firstChar;
+            float $radius = `getAttr ($joint + ".radius")`;
+
+            $axis = `js_getJointAxis $child`;
+
+            // now that we have the axis, we want to check and make sure the rotation order on $joint is correct.
+            int $rotOrderIndex = `getAttr ($joint + ".rotateOrder")`;
+            $rotationOrder = `js_getRotOrderString $joint`;
+
+                float $childT = 0.0;
+                float $tVal = 0.0;
+                string $attr;
+
+
+                $attr = ("t"+$axis);
+
+                // get the value of the child
+                $childT = `getAttr ($child + "." + $attr)`;
+                float $space = $childT/$numSegments;
+                // create a series of locators along the joint based on the number of segments.
+                string $locators[0];
+
+                for ($x = 0; $x < ($numSegments-1); $x++)
+                {
+                   $tmp = `spaceLocator`;
+                   $locators[$x] = $tmp[0];
+
+                    parent $locators[$x] $joint;
+                    setAttr ($locators[$x] + ".t") 0 0 0;
+                    setAttr ($locators[$x] + "." + $attr) ($space * ($x+1));
+                }
+
+
+                string $prevJoint = $joint;
+                for ($x = 0; $x < size($locators); $x++)
+                {
+                    // insert a joint
+                    $newJoint = `insertJoint $prevJoint`;
+
+                    // get the position of the locator
+                    $pos = `xform -q -ws -rp $locators[$x]`;
+
+                    // move the joint there
+                    move -a -ws $pos[0] $pos[1] $pos[2] ($newJoint + ".scalePivot") ($newJoint + ".rotatePivot");
+
+                    // rename the new joint
+                    $newJoint = `rename ($newJoint) ($joint + "_seg_"+($x+1)+"_joint")`;
+
+                    setAttr ($newJoint + ".radius") $radius;
+
+                    // set the rotation order
+                    setAttr ($newJoint + ".rotateOrder") $rotOrderIndex;
+                    // set the prevJoint
+                    $prevJoint = $newJoint;
+                }
+
+                delete $locators;
+
+        }
+    }
+
+}
+global proc js_splitSelJointUI ()
+{
+    // Builds the interface for the splitSelJointUI
+
+    string $win  = "js_splitSelJointWin";
+    if (`window -exists $win`)
+        deleteUI $win;
+
+    window -t "切割骨骼" $win;
+
+    $f = `formLayout -nd 100`;
+
+    $segments = `intSliderGrp -field true -l "分段数" -min 2 -max 40`;
+    $b1 = `button -l "Okay"`;
+    $b2 = `button -l "Cancel"`;
+    formLayout -e
+
+        -af $segments top 5
+        -af $segments left 5
+        -af $segments right 5
+
+        -af $b1 left 5
+        -af $b1 bottom 5
+        -ap $b1 right 0 47
+
+        -af $b2 right 5
+        -af $b2 bottom 5
+        -ap $b2 left 0 52
+        $f;
+
+    // set up callbacks
+    button -e -c ("deleteUI \"" + $win + "\"") $b2;
+    button -e -c ("js_buildSplitJointCmd \"" + $segments + "\"") $b1;
+    // set up defaults
+    int $segmentOpt = 2;
+
+    $segmentOpt = `js_getOptionVar $segmentOpt "js_splitSelSegments"`;
+
+    // now set the item
+    intSliderGrp -e -value $segmentOpt $segments;
+
+    showWindow $win;
+}
+
+global proc js_buildSplitJointCmd (string $segments)
+{
+    // get the values
+    $segmentVal = `intSliderGrp -q -value $segments`;
+
+    // set the optionVars
+    optionVar -iv "js_splitSelSegments" $segmentVal;
+
+    // build the command
+    $cmd = ("js_splitSelJoint " + $segmentVal);
+    evalEcho $cmd;
+};
+
+//重命名
+
+global proc string js_replaceHash (string $string, int $number)
+{
+
+    string $result;
+    // we want to replace the #'s in the name with the $number.
+
+    string $substring = "#+";
+    $substring = `match $substring $string`;
+
+    // $substring is now the number of #'s
+    string $substringNum = substituteAllString($substring, "#", "0");
+    // now add the number at the end
+    string $numString = $number;
+
+    string $newString = ($substringNum + $numString);
+
+    // now strip away the start numbers so we only have the num left
+    int $fullSize =`size($newString)`;
+    int $numSize = `size($numString)`;
+    if ($numSize < size($substringNum))
+    {
+        $numSize = $numSize+1;
+        $numString = `substring $newString $numSize $fullSize`;
+    }
+    $result = `substitute $substring $string $numString`;
+    return $result;
+}
+
+
+global proc string[] js_hashRename (string $newName)
+{
+
+
+    string $objs[0];
+    int $count = 0;
+    string $return[0];
+
+    $objs = `ls -sl`;
+
+    if (size($objs) > 0)
+    {
+
+        $node = `createNode unknown`;
+        addAttr -ln "selObjects" -at message -multi -im 0;
+
+        for ($obj in $objs)
+        {
+            // connect the attributes
+            connectAttr -na ($obj + ".message") ($node + ".selObjects");
+        }
+
+        $con = `listConnections ($node + ".selObjects")`;
+
+        for ($x = 0; $x < size($con); $x++)
+        {
+            string $tmp[0];
+            $tmp = `listConnections ($node + ".selObjects["+$x+"]")`;
+            string $object = $tmp[0];
+
+            // check the searchString for the #'s.  Based on the number of hashes, we'll replace them with the index number
+            $name = `js_replaceHash $newName ($x + 1)`;
+
+            // rename the object
+            $result = `rename $object $name`;
+
+            print ("// Renamed: " + $object + " --> " + $result + "\n");
+        }
+        $return = `listConnections ($node + ".selObjects")`;
+        delete $node;
+
+    }
+    if ((`size $return`) > 0)
+        select $return;
+    return $return;
+}
+//重命名
+
+global proc js_hashRenameUI ()
+{
+    // bring up an interface for hashRename
+
+    $win = "js_hashRename";
+    if (`window -exists $win`)
+        deleteUI $win;
+
+    window -title "重命名" $win;
+
+    columnLayout -adj true -co "both" 10 ;
+    text -align "left" -l "New Name: (example: name####me)";
+    $searchTextGrp = `textField -tx ""`;
+    textField -e -cc ("js_prepHashRename \"" + $searchTextGrp +"\"") $searchTextGrp;
+    showWindow $win;
+
+}
+
+global proc js_prepHashRename (string $stg)
+{
+    // get the results
+    string $search;
+
+    $search = `textField -q -tx $stg`;
+
+    if ($search != "")
+    {
+        $cmd = ("js_hashRename \"" + $search + "\"");
+        evalEcho $cmd;
+        textField -e -tx "" -ip 1 $stg;
+        evalDeferred ("setFocus \""+$stg+"\"");
+
+    }
+}
+global proc string js_getChildJoint (string $joint)
+{
+    string $tmp[0];
+    $tmp = `listRelatives -f -c -type joint $joint`;
+    return ($tmp[0]);
+}
+global proc string js_getRotOrderString (string $joint)
+{
+    string $return;
+    int $ro;
+    $ro = `getAttr ($joint + ".ro")`;
+
+    switch ($ro)
+    {
+        case 0:
+            $return = "xyz";
+            break;
+        case 1:
+            $return = "yzx";
+            break;
+        case 2:
+            $return = "zxy";
+            break;
+        case 3:
+            $return = "xzy";
+            break;
+        case 4:
+            $return = "yxz";
+            break;
+        case 5:
+            $return = "zyx";
+            break;
+    }
+    return $return;
+}
+global proc string js_getJointAxis (string $child)
+{
+    string $axis;
+    float $t[0];
+    $t = `getAttr ($child + ".t")`;
+
+    // get the translation values of the $child joint
+    // now check and see which one is greater than 0.  We should have a tolerance value just in case
+    float $tol = 0.0001;
+    for ($x = 0; $x <= 2; $x++)
+    {
+        if (($t[$x] > $tol) || ($t[$x] < (-1 *$tol)))
+        {
+            switch ($x)
+            {
+                case 0:
+                    $axis = "x";
+                    break;
+                case 1:
+                    $axis = "y";
+                    break;
+                case 2:
+                    $axis = "z";
+                    break;
+            }
+        }
+    }
+
+    if ($axis == "")
+    {
+        error ("The child joint is too close to the parent joint. Cannot determine the proper axis to segment.");
+    }
+    return $axis;
+}
+
+
+//较轴
+global proc jointBox()
+{
+	if ((`window -ex jointBoxWin`) == true) deleteUI jointBoxWin;
+	window -title "较轴" -widthHeight 160 131 -sizeable false jointBoxWin;
+	columnLayout -adjustableColumn true;
+
+	button -label "Orient XYZ" -c "orientJoints(\"xyz\")" -ann "Reorient selected joints with the -oj xyz option";
+	button -label "Orient None" -c "orientJoints(\"none\")" -ann "Reorient selected joints with the -oj none option";
+	button -label "Local Rotation Axes" -c "toggle -localAxis -below" -ann "Toggle local rotation axes visibility";
+	text " ";
+	button -label "Close" -c "deleteUI jointBoxWin";
+	setParent..;
+	showWindow;
+}
+
+global proc orientJoints(string $order)
+{
+	DisableAll;
+	makeIdentity -a true;
+	eval("joint -e -oj " + $order + " -zso -ch");
+	EnableAll;
+}
+
+//添加属性
+global proc addAtrrUi(){
+if (`window -exists mywinow`)
+	deleteUI mywinow;
+window -t "addattr"  mywinow;
+columnLayout;
+textFieldGrp
+       -label "添加属性"
+        -text  ""
+        myattr;
+intFieldGrp
+   -label "最小值"
+    -value1 0
+    mymin;
+intFieldGrp
+    -label "最大值"
+    -value1 1
+    mymax;
+radioButtonGrp -numberOfRadioButtons 3
+    -label1 "属性类型" -labelArray3 "float" "int" "double" aty;
+button -command "findvalue" -label "添加";
+
+showWindow mywinow;
+
+}
+
+
+proc findvalue(){
+string $attrname = `textFieldGrp -q -text   myattr`;
+
+int $minn = `intFieldGrp -q -value1  mymin`;
+
+int $maxx = `intFieldGrp -q -value1 mymax`;
+string $atype = `radioButtonGrp -q -sl aty`;
+if($atype==1){
+addAttr -longName $attrname
+ -keyable true -attributeType "float"
+ -defaultValue 0 -minValue $minn -maxValue $maxx ;
+    }
+    if($atype==2){
+addAttr -longName $attrname
+ -keyable true -attributeType "long"
+ -defaultValue 0 -minValue $minn -maxValue $maxx ;
+    }
+    if($atype==3){
+addAttr -longName $attrname
+ -keyable true -attributeType "double"
+ -defaultValue 0 -minValue $minn -maxValue $maxx ;
+    }
+
+}
+
+
+
+
+//=======锁定属性
+global proc km_animControlCleanUp ()
+{
+//the usual conditional on the window
+if (`window -exists km_animControlCleanUpUI`)
+deleteUI km_animControlCleanUpUI;
+
+window -title "km_animControlCleanUpUI"
+		-widthHeight  220 310
+		-maximizeButton  off
+		km_animControlCleanUpUI;
+
+//use windowPref to remove window settings out of memeory
+//when adjusting stuff like -wh
+//windowPref -r km_animControlCleanUpUI;
+
+//In mainColumn we have: 4 frameLayouts,
+//with each their own child layouts
+
+columnLayout mainColumn;
+
+//FIRST frameLayout---------------------------------------FIRST frameLayout
+
+frameLayout -l "Lock<------------------->Unlock"
+			-collapsable 1
+			-collapse  off
+			-borderStyle "etchedIn"
+			-marginHeight 2
+			-marginWidth  2
+			lockFrame;
+
+rowColumnLayout -numberOfColumns  2 lockRCL;
+
+button -label "Translate" -w 130 -c "lockAttributes_T()";
+button -label "Translate" -w 130 -c "unlockAttributes_T()";
+
+button -label "Rotate" -w 130 -c "lockAttributes_R()";
+button -label "Rotate" -w 130 -c "unlockAttributes_R()";
+
+button -label "Scale" -w 130 -c "lockAttributes_S()";
+button -label "Scale" -w 130 -c "unlockAttributes_S()";
+
+//we have to make mainColumn teh aprent again,
+//otherwise the control below would become child of the lock/unlock frameLayout
+
+setParent mainColumn;//comment out to see difference
+
+
+//SECOND frameLayout---------------------------------------------SECOND frameLayout
+frameLayout -l "Unkeyable<------------>Keyable"
+			-collapsable 1
+			-collapse  off
+			-borderStyle "etchedIn"
+			-marginHeight 2
+			-marginWidth  2
+			keyableFrame;
+
+rowColumnLayout -nc 2 keyableRCL;
+
+button -label "Translate" -w 130 -c "unKeyable_T()";
+button -label "Translate" -w 130 -c "keyable_T()";
+
+button -label "Rotate" -w 130 -c "unKeyable_R()";
+button -label "Rotate" -w 130 -c "keyable_R()";
+
+button -label "Scale" -w 130 -c "unKeyable_S()";
+button -label "Scale" -w 130 -c "keyable_S()";
+
+setParent mainColumn;
+
+//THIRD frameLayout---------------------------------------------THIRD frameLayout
+
+frameLayout -l "Unlock All"
+			-collapsable 1
+			-collapse  off
+			-borderStyle "etchedIn"
+			-marginHeight 2
+			-marginWidth  2
+			unlockAllFrame;
+
+columnLayout unlockAllCol;
+button -label "Individual/Global" -w 200 -c "unlockAll";
+setParent mainColumn;
+string $help;
+
+$help = ("Drag bottom of window to read help\n"
++ "\n"
++ "Lock/unlock/unkeyable/keyable should be pretty self-explanatory. \n"
++ "=============\n"
++ "Just select one or more character controls to clean them out accordingly.\n"
++ "\n"
++ "For example.\n"
++ "Say you are working with FK arms and IK legs.\n"
++ "First select the wrist, elbow and shoulder controls and lock translate and scale.\n"
++ "If desired make then unkeyable.\n"
++ "Secondly, select the footcontrols and lock scale and rotate (if desired).\n"
++ "\n"
++ "\n"
++ "Individual/Global Unlock\n"
++ "=============\n"
++"This button will spawn a new window that lists all the locked"
++ "attributes and will allow the user to unlock");
+
+// To avoid long strings in the -preExpandCommand flags we cast the string in a var
+// Mind the quotation marks in stead of back quotes
+string $expandCommand = "window -e -wh 220 555 km_animControlCleanUpUI";
+string $collapseCommand = "window -e -wh 220 310 km_animControlCleanUpUI";
+
+
+//FOURTH frameLayout-------------------------------------------------------FOURTH frameLayout
+
+frameLayout -l "Help"
+			-w 208
+			-collapsable 1
+			-collapse  1
+			-borderStyle "etchedIn"
+			-marginHeight 2
+			-marginWidth  2
+			-preExpandCommand  $expandCommand
+			-preCollapseCommand  $collapseCommand
+			help;
+
+scrollField -wordWrap true -h 250 -text $help;
+setParent mainColumn;
+showWindow km_animControlCleanUpUI;
+}
+
+
+
+//======================================================================================
+//define global proc for lock/unlock translate, rotate and scale
+//======================================================================================
+
+global proc lockAttributes_T()
+
+{
+//get selection
+string $sel[] = `ls -sl`;
+
+//loop through it and lock translate attrubites
+for ($each in $sel)
+{
+setAttr -lock true ($each + ".tx");
+setAttr -lock true ($each + ".ty");
+setAttr -lock true ($each + ".tz");
+}
+
+};
+
+//---------------
+
+global proc unlockAttributes_T()
+{
+string $sel[] = `ls -sl`;
+
+for ($each in $sel)
+{
+setAttr -lock off ($each +".tx");
+setAttr -lock off ($each +".ty");
+setAttr -lock off ($each +".tz");
+}};
+//---------------
+
+
+global proc lockAttributes_R()
+{
+string $sel[] = `ls -sl`;
+
+for ($each in $sel)
+{
+
+setAttr -lock true ($each + ".rx");
+setAttr -lock true ($each + ".ry");
+setAttr -lock true ($each + ".rz");
+}
+};
+
+//---------------
+
+
+global proc unlockAttributes_R()
+{
+string $sel[] = `ls -sl`;
+
+for ($each in $sel)
+{
+setAttr -lock off ($each +".rx");
+setAttr -lock off ($each +".ry");
+setAttr -lock off ($each +".rz");
+
+}};
+
+
+//---------------
+
+global proc lockAttributes_S()
+
+{
+string $sel[] = `ls -sl`;
+
+for ($each in $sel)
+
+{
+
+setAttr -lock true ($each + ".sx");
+setAttr -lock true ($each + ".sy");
+setAttr -lock true ($each + ".sz");
+}
+
+};
+
+//---------------
+
+global proc unlockAttributes_S()
+{
+string $sel[] = `ls -sl`;
+
+for ($each in $sel)
+
+{
+setAttr -lock off ($each +".sx");
+setAttr -lock off ($each +".sy");
+setAttr -lock off ($each +".sz");
+
+}};
+
+
+//======================================================================================
+// define global proc for keyable/unkeyable for//
+// translate, rotate and scale//
+//======================================================================================
+
+global proc keyable_T()
+
+{
+string $sel[] = `ls -sl`;
+for ($each in $sel)
+{
+setAttr -keyable true ($each + ".tx");
+setAttr -keyable true ($each + ".ty");
+setAttr -keyable true ($each + ".tz");
+}
+
+};
+
+//---------------
+
+global proc unKeyable_T()
+{
+string $sel[] = `ls -sl`;
+for ($each in $sel)
+{
+setAttr -keyable false ($each + ".tx");
+setAttr -keyable false ($each + ".ty");
+setAttr -keyable false ($each + ".tz");
+}};
+
+//---------------
+global proc unKeyable_R()
+{
+string $sel[] = `ls -sl`;
+for ($each in $sel)
+{
+setAttr -keyable false ($each + ".rx");
+setAttr -keyable false ($each + ".ry");
+setAttr -keyable false ($each + ".rz");
+}
+};
+//---------------
+global proc keyable_R()
+{
+string $sel[] = `ls -sl`;
+for ($each in $sel)
+{
+setAttr -keyable true ($each + ".rx");
+setAttr -keyable true ($each + ".ry");
+setAttr -keyable true ($each + ".rz");
+}
+};
+//---------------
+global proc keyable_S()
+{
+string $sel[] = `ls -sl`;
+for ($each in $sel)
+{
+setAttr -keyable true ($each + ".sx");
+setAttr -keyable true ($each + ".sy");
+setAttr -keyable true ($each + ".sz");
+}
+};
+//---------------
+global proc unKeyable_S()
+{string $sel[] = `ls -sl`;
+for ($each in $sel)
+{
+setAttr -keyable false ($each + ".sx");
+setAttr -keyable false ($each + ".sy");
+setAttr -keyable false ($each + ".sz");
+}
+};
+
+//======================================================================================
+// unlockAll loops through selected objects and puts
+// locked attributes in a TSL
+//======================================================================================
+
+global proc unlockAll()
+{
+if (`window -exists unLockWindow`)
+deleteUI unLockWindow;
+window -w 100 -resizeToFitChildren on -mxb 0 unLockWindow;
+
+
+columnLayout -adj on;
+textScrollList -h 150 -allowMultiSelection on -allowAutomaticSelection on attrTSL;
+
+
+//list selected objects
+string $objlist[]= `ls -transforms `;
+//the locked attributes var
+string $attr[];
+
+//loop though all selected objects...
+for ($obj in $objlist)
+ 		{//...and find locked attributes of each object
+	      $attr= `listAttr -locked  $obj`;
+			//Loop through all locked attributes...
+     		for ($each in $attr)
+			{	//...concatenate the full name
+				string $lockedAttr = ($obj + "." +$each);
+				//...and throw it in the TSL
+				textScrollList -e -a $lockedAttr attrTSL;
+			}
+
+     	}
+button -h 20 -l "Unlock Selected" -c unlockSelectedInTSL  unlockSelButton;
+button -h 20 -l "Unlock All" -c unlockIt unlockAllButton;
+showWindow unLockWindow;
+}
+
+//======================================================================================
+// unlockSelectedInTSL...well...
+//======================================================================================
+global proc unlockSelectedInTSL ()
+{
+string $selectedItems[]=`textScrollList -q -si attrTSL`;
+for ($eachItem in $selectedItems)
+	{
+	setAttr -lock false $eachItem;
+	}
+//to refresh window
+unlockAll;
+}
+//======================================================================================
+// unlockAllInTSL...well...
+//======================================================================================
+
+global proc unlockAllInTSL ()
+{
+string $selectedItems[]=`textScrollList -q -ai attrTSL`;
+for ($eachItem in $selectedItems)
+	{
+	setAttr -lock false $eachItem;
+	}
+//to refresh window
+unlockAll;
+}
+//=====弧长显示
+global proc getArcLen(){
+arclen -ch 1;
+}
+//====合并曲线
+global  proc combCurve(){
+string $n[] = `listRelatives -shapes`;
+
+string $d[] = `ls -sl`;
+//createNode transform;
+FreezeTransformations;
+DeleteHistory;
+$i = 0;
+string $nn = "";
+while($i<size($n)){
+$i++;
+$nn+=$n[$i]+" ";
+}
+
+
+string $ppo ="parent -add -shape "+$nn+" "+$d[0];
+
+eval($ppo);
+for ($i=1;$i<size($d);$i++)
+{
+delete $d[$i];
+}
+
+}
+//===========自动加载控制器显示隐藏
+global proc getDriven()
+{
+//the usual conditional on the window
+if (`window -exists getDrivenUI`)
+deleteUI getDrivenUI;
+
+window -title "getDrivenUI"
+		-widthHeight  600 310
+		-maximizeButton  off
+		getDrivenUI;
+
+columnLayout -adjustableColumn on load1;
+
+frameLayout -label "ikfk转换控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf2;
+textFieldButtonGrp -label "ikfk转换控制器" -text "" -buttonLabel "load sel" tb11 ;
+setParent load1;
+frameLayout -label "ik极向量控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf3;
+textFieldButtonGrp -label "ik极向量控制器" -text "" -buttonLabel "Load sel" tb2 ;
+setParent load1;
+
+frameLayout -label "ik手部控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf5;
+textFieldButtonGrp -label "ik手部控制器" -text "" -buttonLabel "Load sel" tb4 ;
+setParent load1;
+
+frameLayout -label "fk手臂控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf9;
+textFieldButtonGrp -label "fk手臂控制器" -text "" -buttonLabel "Load sel" tb8 ;
+setParent load1;
+frameLayout -label "fk肘部控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf10;
+textFieldButtonGrp -label "fk肘部控制器" -text "" -buttonLabel "Load sel" tb9 ;
+setParent load1;
+frameLayout -label "fk手腕控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf11;
+textFieldButtonGrp -label "fk手腕控制器" -text "" -buttonLabel "Load sel" tb10 ;
+setParent load1;
+
+textFieldButtonGrp -e -bc "LoadSelectAttr tb11" tb11 ;
+
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb4" tb4 ;
+
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb8" tb8 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb9" tb9 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb10" tb10 ;
+textFieldButtonGrp -e -bc "js_loadSelectedIntoButtonGrp tb2" tb2 ;
+
+
+
+
+
+button -label "加载转换" -command "getSwitch";
+showWindow getDrivenUI;
+
+}
+global proc js_loadSelectedIntoButtonGrp (string $butName)
+{
+
+    string $objs[0];
+    $objs = `ls -sl`;
+    if (size($objs) > 0)
+    {
+        textFieldButtonGrp -e -tx $objs[0] $butName ;
+    }
+}
+
+global proc getSwitch(){
+$getikfkctr = `textFieldButtonGrp -q -tx tb11`;
+
+$ikebwmatch= `textFieldButtonGrp -q -tx tb2`+".visibility";
+
+$ikhandctr= `textFieldButtonGrp -q -tx tb4`+".visibility";
+
+$fk_armctr= `textFieldButtonGrp -q -tx tb8`+".visibility";
+$fk_ebwctr= `textFieldButtonGrp -q -tx tb9`+".visibility";
+$fk_handctr= `textFieldButtonGrp -q -tx tb10`+".visibility";
+
+
+string $ikfkswitchMel = "if("+$getikfkctr+" == 1){"+"\n"+
+ $ikebwmatch+" ="+$getikfkctr+";"+"\n"+
+ $ikhandctr+" ="+$getikfkctr+";"+"\n"+
+$fk_armctr+" ="+$getikfkctr+"-1"+";"+"\n"+
+ $fk_ebwctr+" ="+$getikfkctr+"-1"+";"+"\n"+
+ $fk_handctr+" ="+$getikfkctr+"-1"+";"+"\n"+
+
+"}else{"+"\n"+
+$ikebwmatch +" ="+$getikfkctr+";"+"\n"+
+ $ikhandctr+" ="+$getikfkctr +";"+"\n"+
+$fk_armctr +" ="+$getikfkctr+"+1"+";"+"\n"+
+ $fk_ebwctr +" ="+$getikfkctr+"+1"+";"+"\n"+
+ $fk_handctr +" ="+$getikfkctr+"+1"+";"+"\n"+
+"}";
+
+expression -s $ikfkswitchMel -n "ikfkswitch";
+
+
+}
+//=======
+global proc LoadSelectAttr(string $butName)
+    {
+
+    string $myObj[]=`ls -sl`;
+    string $myAtr[]=`channelBox -q -sma mainChannelBox`;
+    for($myNode in $myObj)
+        {
+        for($myNodeAtr in $myAtr)
+            {
+           textFieldButtonGrp -e -tx ($myNode+"."+$myNodeAtr) $butName ;
+            }
+        }
+    }
+
+//=========自动加载手壁ikfk驱动
+global proc setDriven()
+{
+//the usual conditional on the window
+if (`window -exists setDrivenUI`)
+deleteUI setDrivenUI;
+
+window -title "getDrivenUI"
+		-widthHeight  600 310
+		-maximizeButton  off
+		setDrivenUI;
+
+columnLayout -adjustableColumn on load1;
+frameLayout -label "ikfk转换控制器" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf1;
+                columnLayout -adjustableColumn off ;
+     separator -style "in";
+     textFieldButtonGrp -label "ikfk转换控制器" -text "" -buttonLabel "load sel" tb1 ;
+
+frameLayout -label "ik" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf2;
+                columnLayout -adjustableColumn off ;
+     separator -style "in";
+textFieldButtonGrp -label "ikblend" -text "" -buttonLabel "load sel" tb11 ;
+textFieldButtonGrp -label "ikhandle点约束" -text "" -buttonLabel "Load sel" tb2 ;
+textFieldButtonGrp -label "手腕骨骼ik旋转约束" -text "" -buttonLabel "Load sel" tb10 ;
+setParent load1;
+
+
+frameLayout -label "fk" -labelAlign "top" -collapsable on
+                -borderStyle "in" ikfkf5;
+                columnLayout -adjustableColumn off ;
+     separator -style "in";
+textFieldButtonGrp -label "fk手腕骨骼旋转约束" -text "" -buttonLabel "Load sel" tb4 ;
+
+textFieldButtonGrp -label "fk肘部骨骼旋转约束" -text "" -buttonLabel "Load sel" tb8 ;
+
+textFieldButtonGrp -label "fk手臂骨骼旋转约束" -text "" -buttonLabel "Load sel" tb9 ;
+setParent load1;
+
+textFieldButtonGrp -e -bc "LoadSelectAttr tb1" tb1 ;
+textFieldButtonGrp -e -bc "LoadSelectAttr tb11" tb11 ;
+
+textFieldButtonGrp -e -bc "LoadSelectAttr tb4" tb4 ;
+
+textFieldButtonGrp -e -bc "LoadSelectAttr tb8" tb8 ;
+textFieldButtonGrp -e -bc "LoadSelectAttr tb9" tb9 ;
+textFieldButtonGrp -e -bc "LoadSelectAttr tb10" tb10 ;
+textFieldButtonGrp -e -bc "LoadSelectAttr tb2" tb2 ;
+
+
+
+
+
+button -label "加载驱动" -command "setSwitch";
+showWindow setDrivenUI;
+
+}
+
+
+global proc setSwitch(){
+$getikfksw =`textFieldButtonGrp -q -tx tb1`;
+$getikfkctr = `textFieldButtonGrp -q -tx tb11`;
+
+$ikebwmatch= `textFieldButtonGrp -q -tx tb2`;
+
+$ikhandctr= `textFieldButtonGrp -q -tx tb4`;
+
+$fk_armctr= `textFieldButtonGrp -q -tx tb8`;
+$fk_ebwctr= `textFieldButtonGrp -q -tx tb9`;
+$fk_handctr= `textFieldButtonGrp -q -tx tb10`;
+setAttr $getikfksw 0;
+setAttr $ikebwmatch 0;
+setAttr $getikfkctr 0;
+setAttr $fk_handctr 0;
+
+setAttr $ikhandctr 1;
+setAttr $fk_armctr 1;
+setAttr $fk_ebwctr 1;
+setDrivenKeyframe -currentDriver $getikfksw $ikebwmatch ;
+setDrivenKeyframe -currentDriver $getikfksw $getikfkctr;
+setDrivenKeyframe -currentDriver $getikfksw $fk_handctr;
+setDrivenKeyframe -currentDriver $getikfksw $ikhandctr;
+setDrivenKeyframe -currentDriver $getikfksw $fk_armctr;
+setDrivenKeyframe -currentDriver $getikfksw $fk_ebwctr;
+setAttr $getikfksw 1;
+setAttr $ikebwmatch 1;
+setAttr $getikfkctr 1;
+setAttr $fk_handctr 1;
+
+setAttr $ikhandctr 0;
+setAttr $fk_armctr 0;
+setAttr $fk_ebwctr 0;
+setDrivenKeyframe -currentDriver $getikfksw $ikebwmatch ;
+setDrivenKeyframe -currentDriver $getikfksw $getikfkctr;
+setDrivenKeyframe -currentDriver $getikfksw $fk_handctr;
+setDrivenKeyframe -currentDriver $getikfksw $ikhandctr;
+setDrivenKeyframe -currentDriver $getikfksw $fk_armctr;
+setDrivenKeyframe -currentDriver $getikfksw $fk_ebwctr;
+
+}
+//=======无缝
+global proc getsNode(){
+$getikfkctr = `textFieldButtonGrp -q -tx tb11`;
+$getikfkAttr  = `textFieldButtonGrp -q -tx tb1`;
+$ikebwmatch= `textFieldButtonGrp -q -tx tb2`;
+$ikhand= `textFieldButtonGrp -q -tx tb3`;
+$ikhandctr= `textFieldButtonGrp -q -tx tb4`;
+ $ikebowctr= `textFieldButtonGrp -q -tx tb5`;
+$ikarm= `textFieldButtonGrp -q -tx tb6`;
+$ikeblow= `textFieldButtonGrp -q -tx tb7`;
+$fk_armctr= `textFieldButtonGrp -q -tx tb8`;
+$fk_ebwctr= `textFieldButtonGrp -q -tx tb9`;
+$fk_handctr= `textFieldButtonGrp -q -tx tb10`;
+
+string $getikfkmel ="global proc getikfkMel(){"+"\n"+
+
+
+
+"float $ikfk = `getAttr "+$getikfkAttr+"`;"+"\n"//ikfk转换控制器
+
++"if($ikfk == 0){"+"\n"+
+
+"float $ebmat[] = `xform -q -ws -t "+$ikebwmatch+"`;"+"\n"//ik极向量位移对位器
++"float $ebmaro[] = `xform -q -ws -ro "+$ikebwmatch+"`;"+"\n"//ik极向量旋转对位器
++"float $fkht[] = `xform -q -ws -t "+$ikhand+"`;"+"\n"//手腕骨骼
++"float $fkhro[] = `xform -q -ws -ro "+$ikhand+"`;"+"\n"+"\n"//手腕骨骼
+
++"move -ws $fkht[0] $fkht[1] $fkht[2] "+$ikhandctr+";"+"\n"//ik手部控制器
++"rotate -ws $fkhro[0] $fkhro[1] $fkhro[2] "+$ikhandctr+";"+"\n"+"\n"//ik手部控制器
+
++"move -ws $ebmat[0] $ebmat[1] $ebmat[2] "+$ikebowctr+";"+"\n"//ik极向量控制器
++"rotate -ws $ebmaro[0] $ebmaro[1] $ebmaro[2] "+$ikebowctr+";"+"\n"+"\n"//ik极向量控制器
+
++"setAttr "+$getikfkAttr+" 1;"+"\n"+"\n"//ikfk转换控制器
++"}if($ikfk == 1){"+"\n"+"\n"+
+
+"float $sht[] = `xform -q -ws -t "+$ikarm+"`;"+"\n"//手臂骨骼
++"float $shro[] = `xform -q -ws -ro "+$ikarm+"`;"+"\n"//手臂骨骼
++"float $febt[] = `xform -q -ws -t "+$ikeblow+"`;"+"\n"//肘部骨骼
++"float $febro[] = `xform -q -ws -ro "+$ikeblow+"`;"+"\n"//肘部骨骼
++"float $fhat[] = `xform -q -ws -t "+$ikhand+"`;"+"\n"//手腕骨骼
++"float $fharo[] = `xform -q -ws -ro "+$ikhand+"`;"+"\n"+"\n"//手腕骨骼
+
+
++"move -ws $sht[0] $sht[1] $sht[2] "+$fk_armctr+";"+"\n"//fk手臂控制器
++"rotate -ws $shro[0] $shro[1] $shro[2] "+$fk_armctr+";"+"\n"+"\n"//fk手臂控制器
+
++"move -ws $febt[0] $febt[1] $febt[2] "+$fk_ebwctr+";"+"\n"//fk肘部控制器
++"rotate -ws $febro[0] $febro[1] $febro[2] "+$fk_ebwctr+";"+"\n"+"\n"//fk肘部控制器
+
++"move -ws $fhat[0] $fhat[1] $fhat[2] "+$fk_handctr+";"+"\n"//fk手腕控制器
++"rotate -ws $fharo[0] $fharo[1] $fharo[2] "+$fk_handctr+";"+"\n"+"\n"//fk手腕控制器
+
++"setAttr "+$getikfkAttr+" 0;"+"\n"//ikfk转换控制器
++"}"+"\n"+
+"}";
+
+scrollField -e -tx $getikfkmel showSCNode;
+
+//=====自动加脚本节点
+/*string $nodeName = `scriptNode -st 1  -bs $getikfkmel -n "IK_FKNode"`;
+scriptNode -eb $nodeName;
+string $getdrocstr = "scriptNode -eb dagMenuProc_Node;";
+string $nodeName2 = `scriptNode -st 1  -bs $getdrocstr -n "executeOnFileLoad"`;
+scriptNode -eb $nodeName2;
+string $getcuststr = "global proc customMenu(string $shortName)"+"\n"+
+"{"+"\n"+
+"if($shortName==\""+$getikfkctr+"\""+" ) " + "\n"+
+ "{"+"\n"+
+"menuItem   -label "+"\""+"LIK & FK"+"\""+"    -command "+"\""+"getikfkMel()"+"\""+"     -enable 1   -radialPosition "+"\""+"N"+"\""+"    -enableCommandRepeat 1;"+"\n"+
+" }"+"\n"+
+
+"}";
+string $nodeName2 = `scriptNode -st 1  -bs $getcuststr -n "customMenu_Node"`;
+scriptNode -eb $nodeName2;*/
+
+}
+
+
+
+
+
+
+UIproc();
