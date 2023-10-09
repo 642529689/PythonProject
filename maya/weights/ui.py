@@ -13,7 +13,7 @@ import weight
 import explorer
 from functools import partial
 
-kwargs_fun = [weight.soft_kwargs, weight.ik_kwargs, partial(weight.split_kwargs, 0),
+kwargs_fun = [weight...., weight.ik_kwargs, partial(weight.split_kwargs, 0),
               partial(weight.split_kwargs, 2), partial(weight.split_kwargs, 1),
               weight.cloth_kwargs, weight.null_kwargs]
 solve_fun = [weight.soft_solve, weight.ik_solve, weight.split_solve, weight.split_solve,
