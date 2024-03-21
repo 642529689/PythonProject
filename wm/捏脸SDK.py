@@ -45,7 +45,7 @@ class facial_edit():
         cmds.frameLayout('otherFrameLayout', label='其他', collapsable=True)
         cmds.columnLayout('otherColumnLayout', w = 350)
 
-        self.bulid_Slider('yingtang_T_UL','meiColumnLayout','印堂—位移—上下')
+        self.bulid_Slider('etouliangce_T_LR','meiColumnLayout','额头两侧—位移—左右')
 
         cmds.setParent('columnLayout')
         cmds.button(label='读取json', w=150, c=self.load_button_cmd)
@@ -174,10 +174,10 @@ class SDK_data():
     @classmethod
     def __init__(self):
         self.name = ''
-        self.resetValue = 0
-        self.value0 = 0
-        self.value1 = 0
-        self.animCurveName = 0
+        self.resetValue = []
+        self.value0 = []
+        self.value1 = []
+        self.animCurveName = []
         print('create SDK_data')
 
     def  getDefaultValue(self,name):
@@ -188,46 +188,56 @@ class SDK_data():
                 attr = attr.replace('_R', '.R')
                 attr = attr.replace('_S', '.S')  
                 attr = pm.PyNode(attr)
+                for curve in attr.outputs(p = True):
+                    curve = pm.PyNode(curve.split('.')[0]) 
+                    value0 = curve.getValue(index = 1)
+                    value1 = curve.getValue(index = 2)
 
-                self.animCurveName = pm.PyNode(attr.outputs( p = True)[0].split('.')[0])
-                self.value0 = self.animCurveName.getValue(index = 1)
-                self.value1 = self.animCurveName.getValue(index = 2)
-
-                self.resetValue = self.value1-self.value0
-                self.value1 = self.value1-self.value0
+                    self.animCurveName.append(curve)
+                    self.resetValue.append(value1 - value0)
+                    self.value1.append(value1 - value0)
+                    self.value0.append(value0)
         
         SDK_edit(name).create_window()
 
     def changed_button(self,value):
-        if value == -0.5:
-            self.value1 = self.value1 - (self.value1 * 0.5)
-            self.animCurveName.setValue(2,(self.value0 + self.value1))
-            self.animCurveName.setValue(0,(self.value0 - self.value1))
-        if value == -0.25:
-            self.value1 = self.value1 - (self.value1 * 0.25)
-            self.animCurveName.setValue(2,(self.value0 + self.value1))
-            self.animCurveName.setValue(0,(self.value0 - self.value1))
-        if value == -0.1:
-            self.value1 = self.value1 - (self.value1 * 0.1)
-            self.animCurveName.setValue(2,(self.value0 + self.value1))
-            self.animCurveName.setValue(0,(self.value0 - self.value1))
-        if value == 0:
-            self.value1 = self.resetValue
-            self.animCurveName.setValue(2,(self.value0 + self.resetValue))
-            self.animCurveName.setValue(0,(self.value0 - self.resetValue))
-        if value == 0.1:
-            self.value1 = self.value1 + (self.value1 * 0.1)
-            self.animCurveName.setValue(2,(self.value0 + self.value1))
-            self.animCurveName.setValue(0,(self.value0 - self.value1))
-        if value == 0.25:
-            self.value1 = self.value1 + (self.value1 * 0.25)
-            self.animCurveName.setValue(2,(self.value0 + self.value1))
-            self.animCurveName.setValue(0,(self.value0 - self.value1))
-        if value == 0.5:
-            self.value1 = self.value1 + (self.value1 * 0.5)
-            self.animCurveName.setValue(2,(self.value0 + self.value1))
-            self.animCurveName.setValue(0,(self.value0 - self.value1))
+        print(self.animCurveName)
+        if value == -0.5:            
+            for i in range(len(self.animCurveName)):
+                self.value1[i] = self.value1[i] - (self.value1[i] * 0.5)
+                self.animCurveName[i].setValue(2,(self.value0[i] + self.value1[i]))
+                self.animCurveName[i].setValue(0,(self.value0[i] - self.value1[i]))
 
+        if value == -0.25:
+            for i in range(len(self.animCurveName)):
+                self.value1[i] = self.value1[i] - (self.value1[i] * 0.25)
+                self.animCurveName[i].setValue(2,(self.value0[i] + self.value1[i]))
+                self.animCurveName[i].setValue(0,(self.value0[i] - self.value1[i]))
+        if value == -0.1:
+           for i in range(len(self.animCurveName)):
+                self.value1[i] = self.value1[i] - (self.value1[i] * 0.1)
+                self.animCurveName[i].setValue(2,(self.value0[i] + self.value1[i]))
+                self.animCurveName[i].setValue(0,(self.value0[i] - self.value1[i]))
+        if value == 0:
+            for i in range(len(self.animCurveName)):
+                self.value1[i] = self.resetValue[i]
+                self.animCurveName[i].setValue(2,(self.value0[i] + self.value1[i]))
+                self.animCurveName[i].setValue(0,(self.value0[i] - self.value1[i]))
+        if value == 0.1:
+            for i in range(len(self.animCurveName)):
+                self.value1[i] = self.value1[i] + (self.value1[i] * 0.1)
+                self.animCurveName[i].setValue(2,(self.value0[i] + self.value1[i]))
+                self.animCurveName[i].setValue(0,(self.value0[i] - self.value1[i]))
+        if value == 0.25:
+            for i in range(len(self.animCurveName)):
+                self.value1[i] = self.value1[i] + (self.value1[i] * 0.25)
+                self.animCurveName[i].setValue(2,(self.value0[i] + self.value1[i]))
+                self.animCurveName[i].setValue(0,(self.value0[i] - self.value1[i]))
+        if value == 0.5:
+            for i in range(len(self.animCurveName)):
+                self.value1[i] = self.value1[i] + (self.value1[i] * 0.5)
+                self.animCurveName[i].setValue(2,(self.value0[i] + self.value1[i]))
+                self.animCurveName[i].setValue(0,(self.value0[i] - self.value1[i]))
 
 class SDK_edit():
     def __init__(self, name):
